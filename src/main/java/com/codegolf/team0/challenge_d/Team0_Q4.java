@@ -1,8 +1,5 @@
 package com.codegolf.team0.challenge_d;
 
-/**
- * Created by tchan on 26/09/17.
- */
 public class Team0_Q4 {
 
     public static void main(String[] args) {

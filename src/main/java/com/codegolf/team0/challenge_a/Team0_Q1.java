@@ -3,9 +3,6 @@ package com.codegolf.team0.challenge_a;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tchan on 26/09/17.
- */
 public class Team0_Q1 {
 
     public static void main(String[] args) {

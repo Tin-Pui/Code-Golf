@@ -2,9 +2,6 @@ package com.codegolf.team0.challenge_c;
 
 import java.util.Calendar;
 
-/**
- * Created by tchan on 26/09/17.
- */
 public class Team0_Q3 {
 
     public static void main(String[] args) {
