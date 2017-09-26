@@ -9,8 +9,8 @@ import java.util.List;
 public class Team0_Q1 {
 
     public static void main(String[] args) {
-        //testAlgorithmSpeed();
-        //testAlgorithmSpeed();
+        testAlgorithmSpeed();
+        testAlgorithmSpeed();
     }
 
     private static void testAlgorithmSpeed() {
@@ -27,18 +27,18 @@ public class Team0_Q1 {
             algorithm1 += time;
         }
         System.out.println(findPrimeNumber(100000));
-        System.out.println("average: "+algorithm1/(times.size()) + " ms");
+        System.out.println("average: "+ algorithm1/(times.size()) + " ms");
     }
 
     public static int findPrimeNumber(int primeIndex) {
         List<Integer> primes = new ArrayList<>();
         primes.add(2);
-        Integer currentInteger = 3;
+        int currentInteger = 3;
         boolean currentIntegerIsPrime;
         do {
             currentIntegerIsPrime = true;
             double max = Math.sqrt(currentInteger);
-            for (Integer prime : primes) {
+            for (int prime : primes) {
                 if (prime > max){
                     break;
                 }
@@ -46,13 +46,11 @@ public class Team0_Q1 {
                     currentIntegerIsPrime = false;
                     break;
                 }
-
             }
             if (currentIntegerIsPrime) {
                 primes.add(currentInteger);
             }
-            currentInteger++;
-            currentInteger++;
+            currentInteger += 2;
         } while (primes.size() < primeIndex);
         return primes.get(primeIndex-1);
     }
