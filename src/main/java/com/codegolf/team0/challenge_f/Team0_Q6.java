@@ -5,8 +5,13 @@ import java.util.Arrays;
 public class Team0_Q6 {
 
     public static void main(String[] args) {
-        int[] array = {1,5,3,2,13,4,7};
-        System.out.println(construct(16,0, "", array));
+        int[] array = {1,2,4,8,16,32,64,128,256,512};
+        long start = System.currentTimeMillis();
+        for (int target = -1000; target <= 1000; target++) {
+            System.out.println(construct(-target,0, "", array));
+        }
+        long end = System.currentTimeMillis();
+        System.out.println((end-start) + " ms");
     }
 
     public static String construct(int finalTarget, int currentValue, String currentConstruct, int[] elements) {
