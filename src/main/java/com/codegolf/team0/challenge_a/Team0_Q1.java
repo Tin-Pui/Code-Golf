@@ -9,13 +9,13 @@ import java.util.List;
 public class Team0_Q1 {
 
     public static void main(String[] args) {
-        testAlgorithmSpeed();
-        testAlgorithmSpeed();
+        testAlgorithmSpeed(10);
+        testAlgorithmSpeed(30);
     }
 
-    private static void testAlgorithmSpeed() {
+    private static void testAlgorithmSpeed(int sampleSize) {
         List<Long> times = new ArrayList<>();
-        for (int i = 1; i<= 30; i++) {
+        for (int i = 1; i<= sampleSize; i++) {
             long start = System.currentTimeMillis();
             findPrimeNumber(100000);
             long finish = System.currentTimeMillis();
