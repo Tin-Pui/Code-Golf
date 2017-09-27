@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class PresidentBirthdayCalculator {
@@ -15,9 +17,9 @@ public class PresidentBirthdayCalculator {
 
     public static void main(String[] args) {
         PresidentBirthdayCalculator calculator = new PresidentBirthdayCalculator();
-        Date testDate = new GregorianCalendar(1960, Calendar.JANUARY, 1).getTime();
-
-        System.out.println(calculator.countMostEverAlive());
+        Date testDate = new GregorianCalendar(1822, Calendar.JANUARY, 1).getTime();
+        System.out.println("Presidents alive at specified date: " + calculator.countPresidentsAlive(testDate));
+        calculator.countMostEverAlive();
     }
 
     public List<Date> readDate(int col) {
@@ -55,7 +57,7 @@ public class PresidentBirthdayCalculator {
         return null;
     }
 
-    // part A
+    // part A - needs fixed, doesn't work
     public Integer countPresidentsAlive(Date thresholdDate) {
         List<Date> deathList = readDate(3);
 
@@ -70,8 +72,10 @@ public class PresidentBirthdayCalculator {
         return result;
     }
 
-    // part B
+    // part B - also prints the answer to part C but needs fixed to show only the ranges for the highest numbers
     public Integer countMostEverAlive() {
+
+        String yearRange = "";
 
         int currentCountAlive = 0;
         int maxNumberAlive = 0;
@@ -93,11 +97,16 @@ public class PresidentBirthdayCalculator {
                 currentCountAlive--;
                 deathCounter++;
             }
-            if (currentCountAlive > maxNumberAlive) {
+            if (currentCountAlive >= maxNumberAlive) {
                 maxNumberAlive = currentCountAlive;
+                LocalDate yearStart = birthList.get(birthCounter-1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int yearRangeStart  = yearStart.getYear();
+                LocalDate yearEnd = deathList.get(deathCounter).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int yearRangeEnd  = yearEnd.getYear();
+                yearRange = currentCountAlive + " alive between years: " + yearRangeStart + " and " + yearRangeEnd;
+                System.out.println(yearRange);
             }
         }
-
         return maxNumberAlive;
     }
 
