@@ -8,13 +8,13 @@ public class Team0_Q6 {
         int[] array = {1,2,4,8,16,32,64,128,256,512};
         long start = System.currentTimeMillis();
         for (int target = -1000; target <= 1000; target++) {
-            System.out.println(construct(-target,0, "", array));
+            construct(target,0, "", array);
         }
         long end = System.currentTimeMillis();
         System.out.println((end-start) + " ms");
     }
 
-    public static String construct(int finalTarget, int currentValue, String currentConstruct, int[] elements) {
+    public static String construct(final int finalTarget,final int currentValue,final String currentConstruct,final int[] elements) {
         if (currentValue != finalTarget) {
             if (elements.length == 0) {
                 return "error";
