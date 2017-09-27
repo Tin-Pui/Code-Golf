@@ -17,9 +17,10 @@ public class PresidentBirthdayCalculator {
 
     public static void main(String[] args) {
         PresidentBirthdayCalculator calculator = new PresidentBirthdayCalculator();
-        Date testDate = new GregorianCalendar(1822, Calendar.JANUARY, 1).getTime();
+        Date testDate = new GregorianCalendar(1820, Calendar.JANUARY, 1).getTime();
+        //System.out.println("Presidents alive at specified date: " + calculator.countPresidentsAlive(testDate));
         System.out.println("Presidents alive at specified date: " + calculator.countPresidentsAlive(testDate));
-        calculator.countMostEverAlive();
+        //calculator.countMostEverAlive();
     }
 
     public List<Date> readDate(int col) {
@@ -57,19 +58,36 @@ public class PresidentBirthdayCalculator {
         return null;
     }
 
-    // part A - needs fixed, doesn't work
+    // part A
     public Integer countPresidentsAlive(Date thresholdDate) {
+
+        int presidentsAlive = 0;
+        List<Date> birthList = readDate(1);
         List<Date> deathList = readDate(3);
 
-        int result = 0;
-        for (Date date : deathList) {
-            if (date == null) {
-                result++;
-            } else if (date.compareTo(thresholdDate) >= 1) {
-                result++;
+        int counter = 0;
+
+        while (counter < birthList.size()) {
+            if (birthList.get(counter).compareTo(thresholdDate) >= 1) {
+                break;
             }
+
+            System.out.println("Counter: " + counter);
+            if (birthList.get(counter).compareTo(thresholdDate) <= 1) {
+                if (deathList.get(counter) != null) {
+                    if (deathList.get(counter).compareTo(thresholdDate) >= 1) {
+                        System.out.println("Birth: " + birthList.get(counter) + " death: " + deathList.get(counter));
+                        presidentsAlive++;
+                    }
+                } else {
+                    System.out.println("President isn't dead");
+                    presidentsAlive++;
+                }
+            }
+            counter++;
         }
-        return result;
+
+        return presidentsAlive;
     }
 
     // part B - also prints the answer to part C but needs fixed to show only the ranges for the highest numbers
@@ -99,10 +117,10 @@ public class PresidentBirthdayCalculator {
             }
             if (currentCountAlive >= maxNumberAlive) {
                 maxNumberAlive = currentCountAlive;
-                LocalDate yearStart = birthList.get(birthCounter-1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                int yearRangeStart  = yearStart.getYear();
+                LocalDate yearStart = birthList.get(birthCounter - 1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int yearRangeStart = yearStart.getYear();
                 LocalDate yearEnd = deathList.get(deathCounter).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                int yearRangeEnd  = yearEnd.getYear();
+                int yearRangeEnd = yearEnd.getYear();
                 yearRange = currentCountAlive + " alive between years: " + yearRangeStart + " and " + yearRangeEnd;
                 System.out.println(yearRange);
             }
