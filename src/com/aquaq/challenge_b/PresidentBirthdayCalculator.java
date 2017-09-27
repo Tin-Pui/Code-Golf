@@ -19,8 +19,12 @@ public class PresidentBirthdayCalculator {
         PresidentBirthdayCalculator calculator = new PresidentBirthdayCalculator();
         Date testDate = new GregorianCalendar(1820, Calendar.JANUARY, 1).getTime();
         //System.out.println("Presidents alive at specified date: " + calculator.countPresidentsAlive(testDate));
-        System.out.println("Presidents alive at specified date: " + calculator.countPresidentsAlive(testDate));
-        //calculator.countMostEverAlive();
+
+
+        List<String> results = calculator.countMostEverAlive();
+        for (String result : results) {
+            System.out.println(result);
+        }
     }
 
     public List<Date> readDate(int col) {
@@ -72,15 +76,12 @@ public class PresidentBirthdayCalculator {
                 break;
             }
 
-            System.out.println("Counter: " + counter);
             if (birthList.get(counter).compareTo(thresholdDate) <= 1) {
                 if (deathList.get(counter) != null) {
                     if (deathList.get(counter).compareTo(thresholdDate) >= 1) {
-                        System.out.println("Birth: " + birthList.get(counter) + " death: " + deathList.get(counter));
                         presidentsAlive++;
                     }
                 } else {
-                    System.out.println("President isn't dead");
                     presidentsAlive++;
                 }
             }
@@ -90,8 +91,10 @@ public class PresidentBirthdayCalculator {
         return presidentsAlive;
     }
 
-    // part B - also prints the answer to part C but needs fixed to show only the ranges for the highest numbers
-    public Integer countMostEverAlive() {
+    // part B - also prints the answer to part C
+    public List<String> countMostEverAlive() {
+
+        List<String> livingCountList = new ArrayList<>();
 
         String yearRange = "";
 
@@ -121,11 +124,20 @@ public class PresidentBirthdayCalculator {
                 int yearRangeStart = yearStart.getYear();
                 LocalDate yearEnd = deathList.get(deathCounter).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 int yearRangeEnd = yearEnd.getYear();
-                yearRange = currentCountAlive + " alive between years: " + yearRangeStart + " and " + yearRangeEnd;
-                System.out.println(yearRange);
+                yearRange = currentCountAlive + "," + yearRangeStart + "," + yearRangeEnd;
+                livingCountList.add(yearRange);
             }
         }
-        return maxNumberAlive;
+
+        for (int i = 0; i < livingCountList.size(); i++) {
+            String[] totalCount = livingCountList.get(i).split(",");
+            if (Integer.valueOf(totalCount[0]) != maxNumberAlive) {
+                livingCountList.remove(i);
+                i--;
+            }
+        }
+
+        return livingCountList;
     }
 
     // part B
