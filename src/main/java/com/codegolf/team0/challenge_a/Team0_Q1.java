@@ -36,10 +36,13 @@ public class Team0_Q1 {
             currentIntegerIsPrime = true;
             double max = Math.sqrt(currentInteger);
             for (int prime : primes) {
+                // check divisability by primes in ascending order of currentInteger
                 if (prime > max){
+                    // currentInteger is a prime number
                     break;
                 }
                 if (prime <= max && currentInteger%prime==0) {
+                    // currentInteger is not a prime number
                     currentIntegerIsPrime = false;
                     break;
                 }
@@ -47,6 +50,7 @@ public class Team0_Q1 {
             if (currentIntegerIsPrime) {
                 primes.add(currentInteger);
             }
+            // only check the primality of odd numbers
             currentInteger += 2;
         } while (primes.size() < primeIndex);
         return primes.get(primeIndex-1);
