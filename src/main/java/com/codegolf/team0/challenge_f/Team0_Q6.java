@@ -16,20 +16,26 @@ import java.util.Arrays;
  */
 public class Team0_Q6 {
     public static void main(String[] args) {
-        int[] array = {1,1,2,4,8,16,32,64,128,256,512};
+        int[] array = {1,2,4,8,16,32,64};
         long start = System.currentTimeMillis();
-        for (int target = -100; target <= 100; target++) {
-            System.out.println(construct(target,0, "", array));
+        for (int target = -130; target <= 130; target++) {
+            System.out.println(integerConstruct(target,array));
         }
         long end = System.currentTimeMillis();
         System.out.println((end-start) + " ms");
     }
 
-    public static String construct(final int finalTarget,final int currentValue,final String currentConstruct,final int[] elements) {
+    public static String integerConstruct(final int targetInteger, final int... elements) {
+        return construct(targetInteger, 0, "", elements);
+    }
+
+    private static String construct(final int finalTarget, final int currentValue, final String currentConstruct, final int[] elements) {
         if (currentValue != finalTarget || currentConstruct.length() == 0) {
             if (elements.length == 0) {
+                // return error when the current construct fails to meet the target
                 return "error";
             } else {
+                // try adding the element
                 if (!construct(
                         finalTarget,
                         currentValue + elements[0],
@@ -41,6 +47,7 @@ public class Team0_Q6 {
                             currentConstruct + "+" + elements[0],
                             Arrays.copyOfRange(elements, 1, elements.length));
                 }
+                // try ignoring the element
                 if (!construct(
                         finalTarget,
                         currentValue,
@@ -52,6 +59,7 @@ public class Team0_Q6 {
                             currentConstruct,
                             Arrays.copyOfRange(elements, 1, elements.length));
                 }
+                // try subtracting the element
                 if (!construct(
                         finalTarget,
                         currentValue - elements[0],
@@ -63,10 +71,12 @@ public class Team0_Q6 {
                             currentConstruct + "-" + elements[0],
                             Arrays.copyOfRange(elements, 1, elements.length));
                 }
+                // return error if construct is not possible
                 return "error";
             }
         } else {
-            return finalTarget + "=" + currentConstruct;
+            // return construct if target integer is met
+            return finalTarget + " = " + currentConstruct;
         }
     }
 }
