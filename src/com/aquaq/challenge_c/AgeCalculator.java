@@ -7,14 +7,11 @@ import java.time.Period;
 public class AgeCalculator {
 
     public static void main(String[] args) {
-
-        System.out.println(getAge(1992, Month.AUGUST, 4));
+        System.out.println("Get years: " + getAge(1992, Month.AUGUST, 4).getYears());
     }
 
-    public static String getAge(Integer year, Month month, Integer day) {
-        Period period = Period.between(LocalDate.of(year, month, day),  LocalDate.now());
-        return period.getYears() + " yr, " + period.getMonths() + " m, " + period.getDays() + " d";
-
+    public static Period getAge(Integer year, Month month, Integer day) {
+        return Period.between(LocalDate.of(year, month, day),  LocalDate.now());
     }
 
 }

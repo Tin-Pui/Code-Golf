@@ -2,7 +2,6 @@ package com.aquaq.challenge_b;
 
 import com.opencsv.CSVReader;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -19,34 +18,35 @@ public class PresidentBirthdayCalculator {
     public static void main(String[] args) {
         PresidentBirthdayCalculator calculator = new PresidentBirthdayCalculator();
 
-        System.out.println("Presidents alive at specified date: "
-                + calculator.countPresidentsAlive(LocalDate.of(1846, Month.JANUARY, 1)));
+        try {
+            System.out.println("Presidents alive at specified date: "
+                    + calculator.countPresidentsAlive(LocalDate.of(1846, Month.JANUARY, 1)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        List<String> results = calculator.countMostEverAlive();
+        List<String> results = null;
+        try {
+            results = calculator.countMostEverAlive();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         for (String result : results) {
             System.out.println(result);
         }
 
     }
 
-    public List<LocalDate> readDates(int column) {
+    public List<LocalDate> readDates(int column) throws IOException {
 
         List<LocalDate> dateList = new ArrayList<>();
-        CSVReader csvReader = null;
-        try {
-            csvReader = new CSVReader(new FileReader(csvFile));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        CSVReader csvReader = new CSVReader(new FileReader(csvFile));
 
         String[] nextLine;
-        try {
-            csvReader.readNext();
-            while ((nextLine = csvReader.readNext()) != null && !nextLine.equals("")) {
-                dateList.add(dateParser(nextLine[column]));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        csvReader.readNext();
+        while ((nextLine = csvReader.readNext()) != null && !nextLine.equals("")) {
+            dateList.add(dateParser(nextLine[column]));
         }
 
         return dateList;
@@ -62,7 +62,7 @@ public class PresidentBirthdayCalculator {
                 return new SimpleDateFormat(format).parse(date)
                         .toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             } catch (ParseException e) {
-                // ignore exception and loop on
+
             }
         }
 
@@ -71,7 +71,7 @@ public class PresidentBirthdayCalculator {
     }
 
     // part A
-    public Integer countPresidentsAlive(LocalDate thresholdDate) {
+    public Integer countPresidentsAlive(LocalDate thresholdDate) throws IOException {
 
         int presidentsAlive = 0;
         List<LocalDate> birthList = readDates(1);
@@ -101,7 +101,7 @@ public class PresidentBirthdayCalculator {
     }
 
     // part B - also prints the answer to part C
-    public List<String> countMostEverAlive() {
+    public List<String> countMostEverAlive() throws IOException {
 
         List<String> livingCountList = new ArrayList<>();
 
