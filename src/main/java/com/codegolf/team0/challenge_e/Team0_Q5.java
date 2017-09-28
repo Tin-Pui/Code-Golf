@@ -25,13 +25,9 @@ public class Team0_Q5 {
                     isFirstCharacter = false;
                 } else {
                     if (nextCharacterToUpper) {
-                        if (Character.isLowerCase(character)) {
-                            characterArray[index] = Character.toUpperCase(character);
-                        }
+                        characterArray[index] = Character.toUpperCase(character);
                     } else {
-                        if (Character.isUpperCase(character)) {
-                            characterArray[index] = Character.toLowerCase(character);
-                        }
+                        characterArray[index] = Character.toLowerCase(character);
                     }
                     nextCharacterToUpper = !nextCharacterToUpper;
                 }
