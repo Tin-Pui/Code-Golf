@@ -10,28 +10,26 @@ public class DayTrader{
     private boolean sellExists = false;
 
     public void accept(double[] prices) {
+        // algorithm assumes day trader must make a profit with 1 buy order and 1 sell order of the same amount
         for (double price : prices) {
             if (!buyExists) {
                 lowestBuyPrice = price;
                 buyExists = true;
-            } else if (!sellExists) {
-                if (price > lowestBuyPrice) {
-                    bestBuyPrice = lowestBuyPrice;
-                    bestSellPrice = price;
-                    maxProfit = bestSellPrice - bestBuyPrice;
-                    sellExists = true;
-                } else {
-                    lowestBuyPrice = price;
-                }
-            } else {
-                if (price < lowestBuyPrice) {
-                    lowestBuyPrice = price;
-                }
-                if ((price - lowestBuyPrice) > maxProfit) {
-                    bestBuyPrice = lowestBuyPrice;
-                    bestSellPrice = price;
-                    maxProfit = bestSellPrice - bestBuyPrice;
-                }
+                sellExists = false;
+                maxProfit = 0;
+            } else if (price < lowestBuyPrice) {
+                lowestBuyPrice = price;
+            }
+
+            if (!sellExists && (price > lowestBuyPrice)) {
+                bestBuyPrice = lowestBuyPrice;
+                bestSellPrice = price;
+                maxProfit = bestSellPrice - bestBuyPrice;
+                sellExists = true;
+            } else if ((price - lowestBuyPrice) > maxProfit) {
+                bestBuyPrice = lowestBuyPrice;
+                bestSellPrice = price;
+                maxProfit = bestSellPrice - bestBuyPrice;
             }
         }
     }
