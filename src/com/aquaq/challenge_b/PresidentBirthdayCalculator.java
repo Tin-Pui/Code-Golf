@@ -19,21 +19,51 @@ public class PresidentBirthdayCalculator {
         PresidentBirthdayCalculator calculator = new PresidentBirthdayCalculator();
 
         try {
+            List<LocalDate> birthList = calculator.readDates(1);
+            List<LocalDate> deathList = calculator.readDates(3);
+
+            LocalDate thresholdDate = LocalDate.of(1846, Month.JANUARY, 1);
+
             System.out.println("Presidents alive at specified date: "
-                    + calculator.countPresidentsAlive(LocalDate.of(1846, Month.JANUARY, 1)));
+                    + calculator.countPresidentsAlive(thresholdDate, birthList, deathList));
+
+            List<String> presidentResults = calculator.countMostEverAlive(birthList, deathList);
+
+            for (String result : presidentResults) {
+                System.out.println(result);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        List<String> results = null;
-        try {
-            results = calculator.countMostEverAlive();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+    }
+
+    // part A
+    public Integer countPresidentsAlive(
+            LocalDate thresholdDate, List<LocalDate> birthList, List<LocalDate> deathList) throws IOException {
+        int presidentsAlive = 0;
+        int counter = 0;
+
+        while (counter < birthList.size()) {
+            if (birthList.get(counter).compareTo(thresholdDate) >= 1) {
+                break;
+            }
+
+            if (birthList.get(counter).compareTo(thresholdDate) <= 1) {
+                if (deathList.get(counter) != null) {
+                    if (deathList.get(counter).compareTo(thresholdDate) >= 1) {
+                        presidentsAlive++;
+                    }
+                } else {
+                    presidentsAlive++;
+                }
+            }
+            counter++;
         }
-        for (String result : results) {
-            System.out.println(result);
-        }
+
+        return presidentsAlive;
 
     }
 
@@ -70,53 +100,19 @@ public class PresidentBirthdayCalculator {
 
     }
 
-    // part A
-    public Integer countPresidentsAlive(LocalDate thresholdDate) throws IOException {
-
-        int presidentsAlive = 0;
-        List<LocalDate> birthList = readDates(1);
-        List<LocalDate> deathList = readDates(3);
-
-        int counter = 0;
-
-        while (counter < birthList.size()) {
-            if (birthList.get(counter).compareTo(thresholdDate) >= 1) {
-                break;
-            }
-
-            if (birthList.get(counter).compareTo(thresholdDate) <= 1) {
-                if (deathList.get(counter) != null) {
-                    if (deathList.get(counter).compareTo(thresholdDate) >= 1) {
-                        presidentsAlive++;
-                    }
-                } else {
-                    presidentsAlive++;
-                }
-            }
-            counter++;
-        }
-
-        return presidentsAlive;
-
-    }
-
     // part B - also prints the answer to part C
-    public List<String> countMostEverAlive() throws IOException {
-
+    public List<String> countMostEverAlive(List<LocalDate> birthList, List<LocalDate> deathList) throws IOException {
         List<String> livingCountList = new ArrayList<>();
 
         int currentCountAlive = 0;
         int maxNumberAlive = 0;
-
         int birthCounter = 0;
         int deathCounter = 0;
-
-        List<LocalDate> birthList = readDates(1);
-        List<LocalDate> deathList = readDates(3);
 
         Collections.sort(birthList);
 
         deathList.removeAll(Collections.singleton(null));
+
         Collections.sort(deathList);
 
         while (birthCounter != birthList.size()) {
@@ -140,16 +136,21 @@ public class PresidentBirthdayCalculator {
             }
         }
 
+        livingCountList = retrieveHighestCount(livingCountList, maxNumberAlive);
+
+        return livingCountList;
+
+    }
+
+    public List<String> retrieveHighestCount(List<String> livingCountList, int highestCount) {
         for (int i = 0; i < livingCountList.size(); i++) {
             String[] totalCount = livingCountList.get(i).split(",");
-            if (Integer.valueOf(totalCount[0]) != maxNumberAlive) {
+            if (Integer.valueOf(totalCount[0]) != highestCount) {
                 livingCountList.remove(i);
                 i--;
             }
         }
-
         return livingCountList;
-
     }
 
 }

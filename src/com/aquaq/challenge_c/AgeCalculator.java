@@ -7,11 +7,16 @@ import java.time.Period;
 public class AgeCalculator {
 
     public static void main(String[] args) {
-        System.out.println("Get years: " + getAge(1992, Month.AUGUST, 4).getYears());
+
+        LocalDate date = LocalDate.of(1984, Month.FEBRUARY, 4);
+
+        String result = String.format("Years: %d, months: %d, days: %d",
+                getAge(date).getYears(), getAge(date).getMonths(), getAge(date).getDays());
+        System.out.println(result);
     }
 
-    public static Period getAge(Integer year, Month month, Integer day) {
-        return Period.between(LocalDate.of(year, month, day),  LocalDate.now());
+    private static Period getAge(LocalDate date) {
+        return Period.between(date, LocalDate.now());
     }
 
 }
