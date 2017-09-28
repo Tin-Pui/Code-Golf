@@ -17,6 +17,9 @@ package com.codegolf.team0.challenge_e;
  */
 public class Team0_Q5 {
     public static void main(String[] args) {
+        System.out.println(manipulate("ALLONEWORDUPPER"));
+        System.out.println(manipulate("allonewordlower"));
+        System.out.println(manipulate("666"));
         System.out.println(manipulate("#ignore+$ymB01s"));
         System.out.println(manipulate("AA11BB22cc60zyx"));
     }
