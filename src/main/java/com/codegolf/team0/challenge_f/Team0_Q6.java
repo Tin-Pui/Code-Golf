@@ -2,6 +2,18 @@ package com.codegolf.team0.challenge_f;
 
 import java.util.Arrays;
 
+/**
+ * Challenge F - Basic set construction
+ * Given a set of numbers and a target construct a function that will create the target number from any element of the set using the addition and subtraction operators and each element only once.
+ * The function should return an error if the target number cannot be met.
+ *
+ * Eg 1 5 2
+ *
+ * with target 4= 5-1
+ * with target 7= 5+2
+ * with target 3= 2+1
+ * with target 9= "error"
+ */
 public class Team0_Q6 {
     public static void main(String[] args) {
         int[] array = {1,1,2,4,8,16,32,64,128,256,512};
