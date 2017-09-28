@@ -10,41 +10,56 @@ import java.util.List;
 public class Team0_Q1 {
 
     public static void main(String[] args) {
-        for (int primeIndex = 1; primeIndex <= 1000; primeIndex+= 1) {
+        for (int primeIndex = 1; primeIndex <= 100; primeIndex+= 1) {
             System.out.println(findPrimeNumber(primeIndex));
         }
+        int primeIndexToFind = 200000;
+        long before = System.currentTimeMillis();
+        int millionthPrime = findPrimeNumber(primeIndexToFind);
+        long after = System.currentTimeMillis();
+        System.out.println("The "+primeIndexToFind+"th prime is " + millionthPrime);
+        System.out.println("Found in " + (after-before) + " ms");
     }
 
-    public static int findPrimeNumber(int primeIndex) {
+    public static int findPrimeNumber(final int primeIndex) {
         List<Integer> primes = new ArrayList<>();
         primes.add(2);
+        int currentPrimeListSize = 1;
         int currentInteger = 3;
-        boolean currentIntegerIsPrime;
         do {
-            currentIntegerIsPrime = true;
-            double max = Math.sqrt(currentInteger);
-            for (int prime : primes) {
-                // check divisability by primes (in ascending order) of currentInteger
-                if (prime > max){
-                    // currentInteger is a prime number
-                    break;
-                }
-                if (prime <= max && currentInteger%prime==0) {
-                    // currentInteger is not a prime number
-                    currentIntegerIsPrime = false;
-                    break;
-                }
-            }
-            if (currentIntegerIsPrime) {
+            if (integerIsPrime(currentInteger, primes)) {
                 primes.add(currentInteger);
+                currentPrimeListSize++;
             }
-            // only check the primality of odd numbers
             currentInteger += 2;
-        } while (primes.size() < primeIndex);
+        } while (currentPrimeListSize < primeIndex);
         return primes.get(primeIndex-1);
     }
 
-    private static void testAlgorithmSpeed(int sampleSize) {
+    /**
+     * Returns an integer's primality using a complete list of primes less than the integer.
+     * @param integer
+     * @param primes
+     * @return
+     */
+    private static boolean integerIsPrime(final int integer, final List<Integer> primes) {
+        boolean isPrime = true;
+        boolean primalityDetermined = false;
+        double maxCheck = Math.sqrt(integer);
+        int primeListSize = primes.size();
+        for (int index = 0; !primalityDetermined && index < primeListSize; index++) {
+            int prime = primes.get(index);
+            if (prime > maxCheck) {
+                primalityDetermined = true;
+            } else if (integer%prime == 0) {
+                isPrime = false;
+                primalityDetermined = true;
+            }
+        }
+        return isPrime;
+    }
+
+    private static void testAlgorithmSpeed(final int sampleSize) {
         List<Long> times = new ArrayList<>();
         for (int i = 1; i<= sampleSize; i++) {
             long start = System.currentTimeMillis();
