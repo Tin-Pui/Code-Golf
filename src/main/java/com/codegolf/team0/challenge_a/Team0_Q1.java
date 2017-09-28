@@ -36,7 +36,7 @@ public class Team0_Q1 {
             currentIntegerIsPrime = true;
             double max = Math.sqrt(currentInteger);
             for (int prime : primes) {
-                // check divisability by primes in ascending order of currentInteger
+                // check divisability by primes (in ascending order) of currentInteger
                 if (prime > max){
                     // currentInteger is a prime number
                     break;

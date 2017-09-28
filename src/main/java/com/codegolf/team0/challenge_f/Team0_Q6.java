@@ -8,7 +8,7 @@ public class Team0_Q6 {
         int[] array = {1,2,4,8,16,32,64,128,256,512};
         long start = System.currentTimeMillis();
         for (int target = -1000; target <= 1000; target++) {
-            construct(target,0, "", array);
+            System.out.println(construct(target,0, "", array));
         }
         long end = System.currentTimeMillis();
         System.out.println((end-start) + " ms");
