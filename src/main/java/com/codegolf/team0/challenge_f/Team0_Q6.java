@@ -36,40 +36,31 @@ public class Team0_Q6 {
                 return "error";
             } else {
                 // try adding the element
-                if (!construct(
+                String tryAddConstruct = construct(
                         finalTarget,
                         currentValue + elements[0],
                         currentConstruct + "+" + elements[0],
-                        Arrays.copyOfRange(elements, 1, elements.length)).equalsIgnoreCase("error")) {
-                    return construct(
-                            finalTarget,
-                            currentValue + elements[0],
-                            currentConstruct + "+" + elements[0],
-                            Arrays.copyOfRange(elements, 1, elements.length));
+                        Arrays.copyOfRange(elements, 1, elements.length));
+                if (!tryAddConstruct.equalsIgnoreCase("error")) {
+                    return tryAddConstruct;
                 }
                 // try ignoring the element
-                if (!construct(
+                String tryNothingConstruct = construct(
                         finalTarget,
                         currentValue,
                         currentConstruct,
-                        Arrays.copyOfRange(elements, 1, elements.length)).equalsIgnoreCase("error")) {
-                    return construct(
-                            finalTarget,
-                            currentValue,
-                            currentConstruct,
-                            Arrays.copyOfRange(elements, 1, elements.length));
+                        Arrays.copyOfRange(elements, 1, elements.length));
+                if (!tryNothingConstruct.equalsIgnoreCase("error")) {
+                    return tryNothingConstruct;
                 }
                 // try subtracting the element
-                if (!construct(
+                String trySubtractConstruct = construct(
                         finalTarget,
                         currentValue - elements[0],
                         currentConstruct + "-" + elements[0],
-                        Arrays.copyOfRange(elements, 1, elements.length)).equalsIgnoreCase("error")) {
-                    return construct(
-                            finalTarget,
-                            currentValue - elements[0],
-                            currentConstruct + "-" + elements[0],
-                            Arrays.copyOfRange(elements, 1, elements.length));
+                        Arrays.copyOfRange(elements, 1, elements.length));
+                if (!trySubtractConstruct.equalsIgnoreCase("error")) {
+                    return trySubtractConstruct;
                 }
                 // return error if construct is not possible
                 return "error";
