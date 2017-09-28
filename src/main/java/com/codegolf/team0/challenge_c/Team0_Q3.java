@@ -11,11 +11,14 @@ import java.time.Period;
 public class Team0_Q3 {
 
     public static void main(String[] args) {
-        Period period = getAge(1983, Month.FEBRUARY, 10);
-        System.out.println(period.getYears() + " yr, " + period.getMonths() + " m, " + period.getDays() + " d");
+        LocalDate birthday = LocalDate.of(1983, Month.FEBRUARY, 10);
+        String result = String.format("Years: %d, months: %d, days: %d",
+                getAge(birthday).getYears(), getAge(birthday).getMonths(), getAge(birthday).getDays());
+        System.out.println(result);
+        System.out.println("(Total months: " + getAge(birthday).toTotalMonths() + ")");
     }
 
-    public static Period getAge(Integer year, Month month, Integer day) {
-        return Period.between(LocalDate.of(year, month, day), LocalDate.now());
+    private static Period getAge(LocalDate birthday) {
+        return Period.between(birthday, LocalDate.now());
     }
 }
