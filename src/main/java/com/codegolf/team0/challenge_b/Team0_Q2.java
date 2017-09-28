@@ -24,38 +24,32 @@ public class Team0_Q2 {
 
     public static void main(String[] args) {
         String csvFile = "src/resources/presidents.csv";
-        System.out.println("Presidents alive at specified date: "
-                + countPresidentsAlive(LocalDate.of(1846, Month.JANUARY, 1), csvFile));
-
-        List<String> results = countMostEverAlive(csvFile);
-        for (String result : results) {
-            System.out.println(result);
-        }
-
-    }
-
-    public static List<LocalDate> readDates(String csvFile, int column) {
-
-        List<LocalDate> dateList = new ArrayList<>();
-        CSVReader csvReader = null;
         try {
-            csvReader = new CSVReader(new FileReader(csvFile));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+            System.out.println("Presidents alive at specified date: "
+                    + countPresidentsAlive(LocalDate.of(1846, Month.JANUARY, 1), csvFile));
 
-        String[] nextLine;
-        try {
-            csvReader.readNext();
-            while ((nextLine = csvReader.readNext()) != null && !nextLine.equals("")) {
-                dateList.add(dateParser(nextLine[column]));
+            List<String> results = countMostEverAlive(csvFile);
+            for (String result : results) {
+                System.out.println(result);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<LocalDate> readDates(String csvFile, int column) throws IOException {
+
+        List<LocalDate> dateList = new ArrayList<>();
+        CSVReader csvReader = null;
+        csvReader = new CSVReader(new FileReader(csvFile));
+
+        String[] nextLine;
+        csvReader.readNext();
+        while ((nextLine = csvReader.readNext()) != null && !nextLine.equals("")) {
+            dateList.add(dateParser(nextLine[column]));
+        }
 
         return dateList;
-
     }
 
     public static LocalDate dateParser(String date) {
@@ -72,11 +66,10 @@ public class Team0_Q2 {
         }
 
         return null;
-
     }
 
     // part A
-    public static Integer countPresidentsAlive(LocalDate thresholdDate, String csvFile) {
+    public static Integer countPresidentsAlive(LocalDate thresholdDate, String csvFile) throws IOException {
 
         int presidentsAlive = 0;
         List<LocalDate> birthList = readDates(csvFile, 1);
@@ -102,11 +95,10 @@ public class Team0_Q2 {
         }
 
         return presidentsAlive;
-
     }
 
     // part B - also prints the answer to part C
-    public static List<String> countMostEverAlive(String csvFile) {
+    public static List<String> countMostEverAlive(String csvFile) throws IOException {
 
         List<String> livingCountList = new ArrayList<>();
 
@@ -154,6 +146,5 @@ public class Team0_Q2 {
         }
 
         return livingCountList;
-
     }
 }
