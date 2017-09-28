@@ -31,43 +31,54 @@ public class Team0_Q6 {
 
     private static String construct(final int finalTarget, final int currentValue, final String currentConstruct, final int[] elements) {
         if (currentValue != finalTarget || currentConstruct.length() == 0) {
-            if (elements.length == 0) {
-                // return error when the current construct fails to meet the target
-                return "error";
-            } else {
-                // try adding the element
-                String tryAddConstruct = construct(
-                        finalTarget,
-                        currentValue + elements[0],
-                        currentConstruct + "+" + elements[0],
-                        Arrays.copyOfRange(elements, 1, elements.length));
-                if (!tryAddConstruct.equalsIgnoreCase("error")) {
-                    return tryAddConstruct;
-                }
-                // try ignoring the element
-                String tryNothingConstruct = construct(
-                        finalTarget,
-                        currentValue,
-                        currentConstruct,
-                        Arrays.copyOfRange(elements, 1, elements.length));
-                if (!tryNothingConstruct.equalsIgnoreCase("error")) {
-                    return tryNothingConstruct;
-                }
-                // try subtracting the element
-                String trySubtractConstruct = construct(
-                        finalTarget,
-                        currentValue - elements[0],
-                        currentConstruct + "-" + elements[0],
-                        Arrays.copyOfRange(elements, 1, elements.length));
-                if (!trySubtractConstruct.equalsIgnoreCase("error")) {
-                    return trySubtractConstruct;
-                }
-                // return error if construct is not possible
-                return "error";
-            }
+            // find a construct if target integer is currently not met
+            return findBranchConstructs(finalTarget, currentValue, currentConstruct, elements);
         } else {
             // return construct if target integer is met
             return finalTarget + " = " + currentConstruct;
         }
+    }
+
+    private static String findBranchConstructs(final int finalTarget, final int currentValue, final String currentConstruct, final int[] elements) {
+        if (elements.length == 0) {
+            // return error when the current construct fails to meet the target
+            return "error";
+        } else {
+            // try to make a construct if there are elements available
+            return tryBranchConstructs(finalTarget, currentValue, currentConstruct, elements);
+        }
+    }
+
+    private static String tryBranchConstructs(final int finalTarget, final int currentValue, final String currentConstruct, final int[] elements) {
+        // try adding the element
+        String tryAddConstruct = construct(
+                finalTarget,
+                currentValue + elements[0],
+                currentConstruct + "+" + elements[0],
+                Arrays.copyOfRange(elements, 1, elements.length)
+        );
+        if (!tryAddConstruct.equalsIgnoreCase("error")) {
+            return tryAddConstruct;
+        }
+        // try ignoring the element
+        String tryNothingConstruct = construct(
+                finalTarget,
+                currentValue,
+                currentConstruct,
+                Arrays.copyOfRange(elements, 1, elements.length));
+        if (!tryNothingConstruct.equalsIgnoreCase("error")) {
+            return tryNothingConstruct;
+        }
+        // try subtracting the element
+        String trySubtractConstruct = construct(
+                finalTarget,
+                currentValue - elements[0],
+                currentConstruct + "-" + elements[0],
+                Arrays.copyOfRange(elements, 1, elements.length));
+        if (!trySubtractConstruct.equalsIgnoreCase("error")) {
+            return trySubtractConstruct;
+        }
+        // return error if construct is not possible
+        return "error";
     }
 }
