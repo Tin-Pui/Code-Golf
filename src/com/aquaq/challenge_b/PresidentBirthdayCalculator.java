@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -17,19 +18,20 @@ public class PresidentBirthdayCalculator {
 
     public static void main(String[] args) {
         PresidentBirthdayCalculator calculator = new PresidentBirthdayCalculator();
-        Date testDate = new GregorianCalendar(1820, Calendar.JANUARY, 1).getTime();
-        //System.out.println("Presidents alive at specified date: " + calculator.countPresidentsAlive(testDate));
 
+        System.out.println("Presidents alive at specified date: "
+                + calculator.countPresidentsAlive(LocalDate.of(1846, Month.JANUARY, 1)));
 
         List<String> results = calculator.countMostEverAlive();
         for (String result : results) {
             System.out.println(result);
         }
+
     }
 
-    public List<Date> readDate(int col) {
+    public List<LocalDate> readDates(int column) {
 
-        List<Date> dateList = new ArrayList<>();
+        List<LocalDate> dateList = new ArrayList<>();
         CSVReader csvReader = null;
         try {
             csvReader = new CSVReader(new FileReader(csvFile));
@@ -40,34 +42,40 @@ public class PresidentBirthdayCalculator {
         String[] nextLine;
         try {
             csvReader.readNext();
-            while ((nextLine = csvReader.readNext()) != null) {
-                dateList.add(dateParser(nextLine[col]));
+            while ((nextLine = csvReader.readNext()) != null && !nextLine.equals("")) {
+                dateList.add(dateParser(nextLine[column]));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return dateList;
+
     }
 
-    public static Date dateParser(String date) {
+    public static LocalDate dateParser(String date) {
         List<String> stringFormats = Arrays.asList("y-M-d", "d/M/y");
 
         for (String format : stringFormats) {
+
             try {
-                return new SimpleDateFormat(format).parse(date);
+                return new SimpleDateFormat(format).parse(date)
+                        .toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             } catch (ParseException e) {
+                // ignore exception and loop on
             }
         }
+
         return null;
+
     }
 
     // part A
-    public Integer countPresidentsAlive(Date thresholdDate) {
+    public Integer countPresidentsAlive(LocalDate thresholdDate) {
 
         int presidentsAlive = 0;
-        List<Date> birthList = readDate(1);
-        List<Date> deathList = readDate(3);
+        List<LocalDate> birthList = readDates(1);
+        List<LocalDate> deathList = readDates(3);
 
         int counter = 0;
 
@@ -89,6 +97,7 @@ public class PresidentBirthdayCalculator {
         }
 
         return presidentsAlive;
+
     }
 
     // part B - also prints the answer to part C
@@ -96,21 +105,22 @@ public class PresidentBirthdayCalculator {
 
         List<String> livingCountList = new ArrayList<>();
 
-        String yearRange = "";
-
         int currentCountAlive = 0;
         int maxNumberAlive = 0;
 
         int birthCounter = 0;
         int deathCounter = 0;
 
-        List<Date> birthList = readDate(1);
-        List<Date> deathList = readDate(3);
+        List<LocalDate> birthList = readDates(1);
+        List<LocalDate> deathList = readDates(3);
 
-        birthList = sortDatesAscending(birthList);
-        deathList = sortDatesAscending(deathList);
+        Collections.sort(birthList);
+
+        deathList.removeAll(Collections.singleton(null));
+        Collections.sort(deathList);
 
         while (birthCounter != birthList.size()) {
+
             if (birthList.get(birthCounter).compareTo(deathList.get(deathCounter)) < 1) {
                 currentCountAlive++;
                 birthCounter++;
@@ -118,13 +128,14 @@ public class PresidentBirthdayCalculator {
                 currentCountAlive--;
                 deathCounter++;
             }
+
             if (currentCountAlive >= maxNumberAlive) {
                 maxNumberAlive = currentCountAlive;
-                LocalDate yearStart = birthList.get(birthCounter - 1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate yearStart = birthList.get(birthCounter - 1);
                 int yearRangeStart = yearStart.getYear();
-                LocalDate yearEnd = deathList.get(deathCounter).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate yearEnd = deathList.get(deathCounter);
                 int yearRangeEnd = yearEnd.getYear();
-                yearRange = currentCountAlive + "," + yearRangeStart + "," + yearRangeEnd;
+                String yearRange = currentCountAlive + ", between " + yearRangeStart + " and " + yearRangeEnd;
                 livingCountList.add(yearRange);
             }
         }
@@ -138,18 +149,7 @@ public class PresidentBirthdayCalculator {
         }
 
         return livingCountList;
-    }
 
-    // part B
-    public List<Date> sortDatesAscending(List<Date> datesToSort) {
-        Collections.sort(datesToSort, new Comparator<Date>() {
-            public int compare(Date date1, Date date2) {
-                if (date1 == null || date2 == null)
-                    return 0;
-                return date1.compareTo(date2);
-            }
-        });
-        return datesToSort;
     }
 
 }
