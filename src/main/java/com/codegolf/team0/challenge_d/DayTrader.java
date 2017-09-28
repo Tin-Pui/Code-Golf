@@ -11,25 +11,8 @@ public class DayTrader {
     public void accept(double[] prices) {
         // algorithm assumes day trader must make a profit with 1 buy order and 1 sell order of the same amount
         for (double price : prices) {
-            if (!buyExists) {
-                lowestBuyPrice = price;
-                buyExists = true;
-                sellExists = false;
-                maxProfit = 0;
-            } else if (price < lowestBuyPrice) {
-                lowestBuyPrice = price;
-            }
-
-            if (!sellExists && (price > lowestBuyPrice)) {
-                bestBuyPrice = lowestBuyPrice;
-                bestSellPrice = price;
-                maxProfit = bestSellPrice - bestBuyPrice;
-                sellExists = true;
-            } else if ((price - lowestBuyPrice) > maxProfit) {
-                bestBuyPrice = lowestBuyPrice;
-                bestSellPrice = price;
-                maxProfit = bestSellPrice - bestBuyPrice;
-            }
+            processLowestBuyPrice(price);
+            processNewBestSellPrice(price);
         }
     }
 
@@ -42,4 +25,25 @@ public class DayTrader {
             System.out.println("No stock prices were given.");
         }
     }
+
+    private void processLowestBuyPrice(double price) {
+        if (!buyExists) {
+            lowestBuyPrice = price;
+            buyExists = true;
+            sellExists = false;
+            maxProfit = 0;
+        } else if (price < lowestBuyPrice) {
+            lowestBuyPrice = price;
+        }
+    }
+
+    private void processNewBestSellPrice(double price) {
+        if ((price - lowestBuyPrice) > maxProfit) {
+            bestBuyPrice = lowestBuyPrice;
+            bestSellPrice = price;
+            maxProfit = bestSellPrice - bestBuyPrice;
+            sellExists = true;
+        }
+    }
+
 }
