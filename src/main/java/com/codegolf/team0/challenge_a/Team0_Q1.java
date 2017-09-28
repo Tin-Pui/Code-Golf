@@ -10,24 +10,9 @@ import java.util.List;
 public class Team0_Q1 {
 
     public static void main(String[] args) {
-        testAlgorithmSpeed(30);
-    }
-
-    private static void testAlgorithmSpeed(int sampleSize) {
-        List<Long> times = new ArrayList<>();
-        for (int i = 1; i<= sampleSize; i++) {
-            long start = System.currentTimeMillis();
-            findPrimeNumber(100000);
-            long finish = System.currentTimeMillis();
-            System.out.println(finish - start + " ms");
-            times.add(finish-start);
+        for (int primeIndex = 1; primeIndex <= 1000; primeIndex+= 1) {
+            System.out.println(findPrimeNumber(primeIndex));
         }
-        long algorithm1 = 0;
-        for (Long time : times) {
-            algorithm1 += time;
-        }
-        System.out.println("100000th prime number is " + findPrimeNumber(100000));
-        System.out.println("average: "+ algorithm1/(times.size()) + " ms");
     }
 
     public static int findPrimeNumber(int primeIndex) {
@@ -57,5 +42,22 @@ public class Team0_Q1 {
             currentInteger += 2;
         } while (primes.size() < primeIndex);
         return primes.get(primeIndex-1);
+    }
+
+    private static void testAlgorithmSpeed(int sampleSize) {
+        List<Long> times = new ArrayList<>();
+        for (int i = 1; i<= sampleSize; i++) {
+            long start = System.currentTimeMillis();
+            findPrimeNumber(100000);
+            long finish = System.currentTimeMillis();
+            System.out.println(finish - start + " ms");
+            times.add(finish-start);
+        }
+        long algorithm1 = 0;
+        for (Long time : times) {
+            algorithm1 += time;
+        }
+        System.out.println("100000th prime number is " + findPrimeNumber(100000));
+        System.out.println("average: "+ algorithm1/(times.size()) + " ms");
     }
 }
